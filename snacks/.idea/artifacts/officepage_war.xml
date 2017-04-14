@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="officepage:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="snacks.war">
+      <element id="artifact" artifact-name="officepage:war exploded" />
+    </root>
+  </artifact>
+</component>
