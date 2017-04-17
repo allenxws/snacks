@@ -1,4 +1,4 @@
-package com.snacks.userr.domain;
+package com.snacks.user.domain;
 
 import com.snacks.common.domain.CommonDomain;
 

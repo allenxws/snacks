@@ -8,11 +8,17 @@ import com.snacks.order.aggregate.OrderRecordServiceRoot;
 import com.snacks.product.aggregate.ProductImageServiceRoot;
 import com.snacks.product.aggregate.ProductServiceRoot;
 import com.snacks.product.domain.Product;
+import com.snacks.product.domain.ProductComment;
 import com.snacks.product.domain.ProductImage;
 import com.snacks.product.domain.ProductInfo;
 import com.snacks.product.request.AppListActivityProductRequest;
+import com.snacks.product.request.AppListCommentRequest;
 import com.snacks.product.response.AppGetProductDetailResponse;
+import com.snacks.product.response.AppGetProductInfoResponse;
 import com.snacks.product.response.AppListActivityProductResponse;
+import com.snacks.product.response.AppListCommentResponse;
+import com.snacks.user.aggregate.UserServiceRoot;
+import com.snacks.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -34,6 +40,8 @@ public class ProductConvertor {
 	FileRecordServiceRoot fileRecordServiceRoot;
 	@Autowired
 	OrderRecordServiceRoot orderRecordServiceRoot;
+	@Autowired
+	UserServiceRoot userServiceRoot;
 
 	public AppListActivityProductResponse convertToAppListActivityProductResponse(ActivityProduct activityProduct) {
 		AppListActivityProductResponse appListActivityProductResponse = new AppListActivityProductResponse();
@@ -87,5 +95,60 @@ public class ProductConvertor {
 		appGetProductDetailResponse.setProducePlace(productInfo.getProducePlace());
 		appGetProductDetailResponse.setContentImages(fileRecordServiceRoot.batchGetFileUrlById(ListUtils.stringToIdList(productImage.getContentImages())));
 		return appGetProductDetailResponse;
+	}
+
+	public static AppGetProductInfoResponse convertToAppGetProductInfoResponse(ProductInfo productInfo) {
+		AppGetProductInfoResponse appGetProductInfoResponse = new AppGetProductInfoResponse();
+		if (null == productInfo) {
+			return appGetProductInfoResponse;
+		}
+		appGetProductInfoResponse.setBrand(productInfo.getBrand());
+		appGetProductInfoResponse.setProductName(productInfo.getProductName());
+		appGetProductInfoResponse.setQualityPeriod(productInfo.getQualityPeriod());
+		appGetProductInfoResponse.setProduceDate(productInfo.getProduceDate());
+		appGetProductInfoResponse.setVolume(productInfo.getVolume());
+		appGetProductInfoResponse.setPackageWay(productInfo.getPackageWay());
+		appGetProductInfoResponse.setProducePlace(productInfo.getProducePlace());
+		appGetProductInfoResponse.setStorageWay(productInfo.getStorageWay());
+		appGetProductInfoResponse.setTechnology(productInfo.getTechnology());
+		appGetProductInfoResponse.setContainSugar(productInfo.getContainSugar());
+		appGetProductInfoResponse.setIngredients(productInfo.getIngredients());
+		appGetProductInfoResponse.setProducePermit(productInfo.getProducePermit());
+		appGetProductInfoResponse.setBarCode(productInfo.getBarCode());
+		appGetProductInfoResponse.setProductCode(productInfo.getProductCode());
+		return appGetProductInfoResponse;
+	}
+
+	public static Map convertAppListCommentRequest(AppListCommentRequest appListCommentRequest) {
+		Map paramMap = new HashMap();
+		paramMap.put("productId", appListCommentRequest.getProductId());
+		paramMap.put("boundId", appListCommentRequest.getBoundId());
+		paramMap.put("pageSize", appListCommentRequest.getPageSize());
+		return paramMap;
+	}
+
+	public AppListCommentResponse convertToAppListCommentResponse(ProductComment productComment) {
+		AppListCommentResponse appListCommentResponse = new AppListCommentResponse();
+		if (null == productComment) {
+			return appListCommentResponse;
+		}
+		User user = userServiceRoot.getById(productComment.getUserId());
+		appListCommentResponse.setHeadImage(fileRecordServiceRoot.getFileUrlById(user.getHeadId()));
+		appListCommentResponse.setUserName(user.getUserName());
+		appListCommentResponse.setCommentTime(productComment.getCreateTime());
+		appListCommentResponse.setScore(productComment.getScore());
+		appListCommentResponse.setContent(productComment.getContent());
+		return appListCommentResponse;
+	}
+
+	public List<AppListCommentResponse> convertToAppListCommentResponses(List<ProductComment> productComments) {
+		List<AppListCommentResponse> appListCommentResponses = Lists.newArrayList();
+		if (CollectionUtils.isEmpty(productComments)) {
+			return appListCommentResponses;
+		}
+		for (ProductComment productComment : productComments) {
+			appListCommentResponses.add(convertToAppListCommentResponse(productComment));
+		}
+		return appListCommentResponses;
 	}
 }
