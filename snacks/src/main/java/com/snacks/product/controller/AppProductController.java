@@ -30,8 +30,8 @@ public class AppProductController extends BaseSSOController {
 	}
 
 	@RequestMapping(value = "/getDetail", method = RequestMethod.GET)
-	public CommonResponse<AppGetProductDetailResponse> getDetail(@RequestParam("id") Long id) {
-		return appProductService.getDetail(id);
+	public CommonResponse<AppGetProductDetailResponse> getDetail(@RequestParam("activity_id") Long activityId, @RequestParam("product_id") Long productId) {
+		return appProductService.getDetail(activityId, productId);
 	}
 
 	@RequestMapping(value = "/getInfo", method = RequestMethod.GET)
@@ -40,7 +40,7 @@ public class AppProductController extends BaseSSOController {
 	}
 
 	@RequestMapping(value = "/listComment", method = RequestMethod.POST)
-	public CommonPhoneListResponse<AppListCommentResponse> listComment(@RequestBody @Valid AppListCommentRequest appListCommentRequest){
+	public CommonPhoneListResponse<AppListCommentResponse> listComment(@RequestBody @Valid AppListCommentRequest appListCommentRequest) {
 		return appProductService.listComment(appListCommentRequest);
 	}
 }

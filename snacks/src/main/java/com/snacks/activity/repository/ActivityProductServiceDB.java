@@ -28,7 +28,7 @@ public class ActivityProductServiceDB {
 		return activityProductMapper.listForApp(paramMap);
 	}
 
-	public ActivityProduct getById(Long id){
-		return activityProductMapper.getByProductId(id);
+	public ActivityProduct getByActivityIdAndProductId(Long activityId, Long productId) {
+		return activityProductMapper.getByActivityIdAndProductId(activityId, productId);
 	}
 }

@@ -50,7 +50,8 @@ public class ProductConvertor {
 		}
 		Product product = productServiceRoot.getById(activityProduct.getProductId());
 		Long headImage = productImageServiceRoot.getHeadImageByProduct(activityProduct.getProductId());
-		appListActivityProductResponse.setId(product.getId());
+		appListActivityProductResponse.setId(activityProduct.getId());
+		appListActivityProductResponse.setProductId(product.getId());
 		appListActivityProductResponse.setName(product.getName());
 		appListActivityProductResponse.setImgUrl(fileRecordServiceRoot.getFileUrlById(headImage));
 		appListActivityProductResponse.setNewPrice(activityProduct.getActivityPrice());

@@ -15,6 +15,8 @@ import java.util.Map;
 public class ActivityProductServiceRoot {
 	@Autowired
 	ActivityProductServiceDB activityProductServiceDB;
+	@Autowired
+	ActivityServiceRoot activityServiceRoot;
 
 	public List<Long> listProductIdByActivityId(Long activityId) {
 		return activityProductServiceDB.listProductIdByActivityId(activityId);
@@ -24,7 +26,12 @@ public class ActivityProductServiceRoot {
 		return activityProductServiceDB.listForApp(paramMap);
 	}
 
-	public ActivityProduct getById(Long id){
-		return activityProductServiceDB.getById(id);
+	public ActivityProduct getByProductIdAndActivityId(Long activityId, Long productId) {
+		return activityProductServiceDB.getByActivityIdAndProductId(activityId, productId);
+	}
+
+	public ActivityProduct getActiveByProductId(Long productId) {
+		Long activityId = activityServiceRoot.getActiveActivityId();
+		return activityProductServiceDB.getByActivityIdAndProductId(activityId, productId);
 	}
 }

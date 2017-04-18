@@ -57,11 +57,11 @@ public class AppProductService {
 		return new CommonPhoneListResponse<>(appListActivityProductResponses);
 	}
 
-	public CommonResponse<AppGetProductDetailResponse> getDetail(Long id) {
-		Product product = productServiceRoot.getById(id);
-		ActivityProduct activityProduct = activityProductServiceRoot.getById(id);
-		ProductInfo productInfo = productInfoServiceRoot.getByProductId(id);
-		ProductImage productImage = productImageServiceRoot.getByProductId(id);
+	public CommonResponse<AppGetProductDetailResponse> getDetail(Long activityId, Long productId) {
+		Product product = productServiceRoot.getById(productId);
+		ActivityProduct activityProduct = activityProductServiceRoot.getByProductIdAndActivityId(activityId, productId);
+		ProductInfo productInfo = productInfoServiceRoot.getByProductId(productId);
+		ProductImage productImage = productImageServiceRoot.getByProductId(productId);
 		AppGetProductDetailResponse appGetProductDetailResponse = productConvertor.convertToAppGetProductDetailResponse(product, activityProduct, productInfo, productImage);
 		return new CommonResponse<>(appGetProductDetailResponse);
 	}
